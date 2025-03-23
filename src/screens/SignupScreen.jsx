@@ -8,13 +8,21 @@ import { BoxReveal } from '@/components/magicui/box-reveal';
 
 const SignUpScreen = () => {
   // State for form fields
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   
+  // FIREBASE AUTHENTICATION: Sign Up
   const handleSignUp = (e) => {
     e.preventDefault();
-    console.log('Sign up attempted with:', { name, email, password });
+    try {
+      console.log('Sign up successful');
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
   
   return (
@@ -30,10 +38,10 @@ const SignUpScreen = () => {
                 width={20}
                 height={20}
                 squares={[80, 80]}
-                squaresClassName="hover:fill-red-500"
+                squaresClassName="hover:fill-purple"
             />
             <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
-              <BoxReveal boxColor="red" duration={0.5}>
+              <BoxReveal boxColor="#5046e6" duration={0.5}>
                 <h1 className='text-6xl font-bold text-black text-center'>
                     GDG Event 
                     <LineShadowText className="italic">
@@ -52,7 +60,7 @@ const SignUpScreen = () => {
 
 
         {/* Right side - Create account form */}
-        <div className="w-1/2 bg-destructive p-12 flex flex-col justify-center items-center">
+        <div className="w-1/2 bg-purple p-12 flex flex-col justify-center items-center">
           <h2 className="text-2xl font-bold text-white mb-6">Create Account</h2>
           <p className="text-white mb-6">Use your email for registration</p>
           <form onSubmit={handleSignUp} className="w-full">

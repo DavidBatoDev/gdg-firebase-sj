@@ -33,6 +33,7 @@ const events = [
     }
 ]
 
+// FIREBASE AUTHENTHICATION: Logout
 const handleLogout = () => {
     navigate('/login');
 }

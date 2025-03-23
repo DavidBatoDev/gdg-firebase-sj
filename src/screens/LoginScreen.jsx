@@ -2,25 +2,30 @@ import React, { useState } from 'react';
 import { cn } from "@/lib/utils";
 import { InteractiveGridPattern } from "@/components/magicui/interactive-grid-pattern";
 import { LineShadowText } from "@/components/magicui/line-shadow-text";
-import { TextAnimate } from "@/components/magicui/text-animate";
+// import { TextAnimate } from "@/components/magicui/text-animate";
 import { Link } from 'react-router-dom';
 import { BoxReveal } from '@/components/magicui/box-reveal';
+import { CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const LoginScreen = () => {
   const navigate = useNavigate();
 
   // State for form fields
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   
-  // firebase login
+  // FIREBASE AUTHENTICATION: Login
   const handleLogin = (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       navigate('/events');
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
   
