@@ -4,8 +4,12 @@ import { InteractiveGridPattern } from "@/components/magicui/interactive-grid-pa
 import { LineShadowText } from "@/components/magicui/line-shadow-text";
 import { TextAnimate } from "@/components/magicui/text-animate";
 import { Link } from 'react-router-dom';
+import { BoxReveal } from '@/components/magicui/box-reveal';
+import { useNavigate } from 'react-router-dom';
 
 const LoginScreen = () => {
+  const navigate = useNavigate();
+
   // State for form fields
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,7 +17,11 @@ const LoginScreen = () => {
   // firebase login
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log('Sign up attempted with:', { email, password });
+    try {
+      navigate('/events');
+    } catch (error) {
+      console.log(error);
+    }
   };
   
   return (
@@ -21,7 +29,7 @@ const LoginScreen = () => {
       <div className="flex w-full h-full shadow-lg overflow-hidden">
 
         {/* Left side */}
-        <div className="w-1/2 bg-destructive p-12 flex flex-col justify-center items-center">
+        <div className="w-1/2 bg-purple p-12 flex flex-col justify-center items-center">
           <h2 className="text-2xl font-bold text-white mb-6">Login an Account</h2>
           <p className="text-white mb-6">Use your existing email for registration</p>
           <form onSubmit={handleLogin} className="w-full">
@@ -32,7 +40,7 @@ const LoginScreen = () => {
                 className="w-full px-4 py-2 bg-gray-100 border border-gray-200 rounded"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
+                // required
               />
             </div>
             
@@ -43,7 +51,7 @@ const LoginScreen = () => {
                 className="w-full px-4 py-2 bg-gray-100 border border-gray-200 rounded"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
+                // required
               />
             </div>
             
@@ -52,7 +60,7 @@ const LoginScreen = () => {
                 type="submit"
                 className="bg-white text-black px-10 py-2 rounded-full hover:bg-red-200 transition-colors"
               >
-                SIGN UP
+                Login
               </button>
             </div>
           </form>
@@ -72,20 +80,22 @@ const LoginScreen = () => {
                 width={20}
                 height={20}
                 squares={[80, 80]}
-                squaresClassName="hover:fill-red-500"
+                squaresClassName="hover:fill-purple"
             />
             <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
-                <h1 className='text-6xl font-bold text-black text-center'>
-                    GDG Event 
-                    <LineShadowText className="italic">
-                        RSVP
-                    </LineShadowText>
-                </h1>
-                <div className='text-center mt-6'>
-                    <TextAnimate animation="blurInUp" by="character" once={true}>
+              <BoxReveal boxColor="#5046e6" duration={0.5}>
+                  <h1 className='text-6xl font-bold text-black text-center'>
+                      GDG Event 
+                      <LineShadowText className="italic">
+                          RSVP
+                      </LineShadowText>
+                  </h1>
+                </BoxReveal>
+                <BoxReveal>
+                    <div className='text-center mt-6'>
                         'An interactive event RSVP platform for GDG events built using Firebase FireStore.'
-                    </TextAnimate>
-                </div>
+                    </div>
+                </BoxReveal>
             </div>
         </div>
       </div>

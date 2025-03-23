@@ -4,6 +4,7 @@ import { InteractiveGridPattern } from "@/components/magicui/interactive-grid-pa
 import { LineShadowText } from "@/components/magicui/line-shadow-text";
 import { TextAnimate } from "@/components/magicui/text-animate";
 import { Link } from 'react-router-dom';
+import { BoxReveal } from '@/components/magicui/box-reveal';
 
 const SignUpScreen = () => {
   // State for form fields
@@ -32,12 +33,14 @@ const SignUpScreen = () => {
                 squaresClassName="hover:fill-red-500"
             />
             <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+              <BoxReveal boxColor="red" duration={0.5}>
                 <h1 className='text-6xl font-bold text-black text-center'>
                     GDG Event 
                     <LineShadowText className="italic">
                         RSVP
                     </LineShadowText>
                 </h1>
+              </BoxReveal>
                 <div className='text-center mt-6'>
                     <TextAnimate animation="blurInUp" by="character" once={true}>
                         {name ? `Welcome, ${name}!` : 'An interactive event RSVP platform for GDG events built using Firebase FireStore.'}
