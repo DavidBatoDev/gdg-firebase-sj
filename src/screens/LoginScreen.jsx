@@ -3,16 +3,17 @@ import { cn } from "@/lib/utils";
 import { InteractiveGridPattern } from "@/components/magicui/interactive-grid-pattern";
 import { LineShadowText } from "@/components/magicui/line-shadow-text";
 import { TextAnimate } from "@/components/magicui/text-animate";
+import { Link } from 'react-router-dom';
 
 const LoginScreen = () => {
   // State for form fields
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   
-  const handleSignUp = (e) => {
+  // firebase login
+  const handleLogin = (e) => {
     e.preventDefault();
-    console.log('Sign up attempted with:', { name, email, password });
+    console.log('Sign up attempted with:', { email, password });
   };
   
   return (
@@ -20,49 +21,10 @@ const LoginScreen = () => {
       <div className="flex w-full h-full shadow-lg overflow-hidden">
 
         {/* Left side */}
-        <div className='w-1/2 relative'>
-            <InteractiveGridPattern
-                className={cn(
-                "[mask-image:radial-gradient(400px_circle_at_center,white,transparent)]",
-                )}
-                width={20}
-                height={20}
-                squares={[80, 80]}
-                squaresClassName="hover:fill-red-500"
-            />
-            <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
-                <h1 className='text-6xl font-bold text-black text-center'>
-                    GDG Event 
-                    <LineShadowText className="italic">
-                        RSVP
-                    </LineShadowText>
-                </h1>
-                <div className='text-center mt-6'>
-                    <TextAnimate animation="blurInUp" by="character" once={true}>
-                        {name ? `Welcome, ${name}!` : 'An interactive event RSVP platform for GDG events built using Firebase FireStore.'}
-                        
-                    </TextAnimate>
-                </div>
-            </div>
-        </div>
-
-
-        {/* Right side - Create account form */}
         <div className="w-1/2 bg-destructive p-12 flex flex-col justify-center items-center">
-          <h2 className="text-2xl font-bold text-white mb-6">Create Account</h2>
-          <p className="text-white mb-6">Use your email for registration</p>
-          <form onSubmit={handleSignUp} className="w-full">
-            <div className="mb-4">
-              <input
-                type="text"
-                placeholder="Name"
-                className="w-full px-4 py-2 bg-gray-100 border border-gray-200 rounded"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </div>
-            
+          <h2 className="text-2xl font-bold text-white mb-6">Login an Account</h2>
+          <p className="text-white mb-6">Use your existing email for registration</p>
+          <form onSubmit={handleLogin} className="w-full">
             <div className="mb-4">
               <input
                 type="email"
@@ -94,6 +56,37 @@ const LoginScreen = () => {
               </button>
             </div>
           </form>
+          <button className="text-white mt-6 hover:underline">
+            <Link to={'/signup'} >
+              Don't  have an account? Sign up
+            </Link>
+          </button>
+        </div>
+
+        {/* Right side - Create account form */}
+        <div className='w-1/2 relative'>
+            <InteractiveGridPattern
+                className={cn(
+                "[mask-image:radial-gradient(400px_circle_at_center,white,transparent)]",
+                )}
+                width={20}
+                height={20}
+                squares={[80, 80]}
+                squaresClassName="hover:fill-red-500"
+            />
+            <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+                <h1 className='text-6xl font-bold text-black text-center'>
+                    GDG Event 
+                    <LineShadowText className="italic">
+                        RSVP
+                    </LineShadowText>
+                </h1>
+                <div className='text-center mt-6'>
+                    <TextAnimate animation="blurInUp" by="character" once={true}>
+                        'An interactive event RSVP platform for GDG events built using Firebase FireStore.'
+                    </TextAnimate>
+                </div>
+            </div>
         </div>
       </div>
     </div>

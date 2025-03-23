@@ -5,7 +5,7 @@ import { LineShadowText } from "@/components/magicui/line-shadow-text";
 import { TextAnimate } from "@/components/magicui/text-animate";
 import { Link } from 'react-router-dom';
 
-const SignUpScreen = () => {
+const AdminSignUpScreen = () => {
   // State for form fields
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -40,7 +40,7 @@ const SignUpScreen = () => {
                 </h1>
                 <div className='text-center mt-6'>
                     <TextAnimate animation="blurInUp" by="character" once={true}>
-                        {name ? `Welcome, ${name}!` : 'An interactive event RSVP platform for GDG events built using Firebase FireStore.'}
+                        {name ? `Welcome, Sergeant ${name}!` : 'An interactive event RSVP platform for GDG events built using Firebase FireStore.'}
                         
                     </TextAnimate>
                 </div>
@@ -50,7 +50,7 @@ const SignUpScreen = () => {
 
         {/* Right side - Create account form */}
         <div className="w-1/2 bg-destructive p-12 flex flex-col justify-center items-center">
-          <h2 className="text-2xl font-bold text-white mb-6">Create Account</h2>
+          <h2 className="text-2xl font-bold text-white mb-6">Create Account for Admin Dashboard</h2>
           <p className="text-white mb-6">Use your email for registration</p>
           <form onSubmit={handleSignUp} className="w-full">
             <div className="mb-4">
@@ -95,12 +95,9 @@ const SignUpScreen = () => {
               </button>
             </div>
           </form>
-          <button className='text-white flex gap-10 '>
-            <Link to={'/login'} className="text-white mt-6 hover:underline ">
+          <button className='text-white mt-6 hover:underline'>
+            <Link to={'/login'} className="text-white mt-6">
               Already have an account? Login
-            </Link>
-            <Link to={'/admin-signup'} className="text-white mt-6 hover:underline ">
-              Register as an Admin?
             </Link>
           </button>
         </div>
@@ -109,4 +106,4 @@ const SignUpScreen = () => {
   );
 };
 
-export default SignUpScreen;
+export default AdminSignUpScreen;
