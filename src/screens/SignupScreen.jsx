@@ -4,7 +4,7 @@ import { InteractiveGridPattern } from "@/components/magicui/interactive-grid-pa
 import { LineShadowText } from "@/components/magicui/line-shadow-text";
 import { TextAnimate } from "@/components/magicui/text-animate";
 
-const LoginScreen = () => {
+const SignUpScreen = () => {
   // State for form fields
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -100,4 +100,4 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default SignUpScreen;
