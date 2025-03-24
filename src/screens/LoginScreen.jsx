@@ -5,8 +5,9 @@ import { LineShadowText } from "@/components/magicui/line-shadow-text";
 // import { TextAnimate } from "@/components/magicui/text-animate";
 import { Link } from 'react-router-dom';
 import { BoxReveal } from '@/components/magicui/box-reveal';
-import { CircularProgress } from '@mui/material';
+import Loading from '@/components/loading';
 import { useNavigate } from 'react-router-dom';
+import { signInService } from '@/services/AuthService';
 
 const LoginScreen = () => {
   const navigate = useNavigate();
@@ -17,13 +18,24 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   
   // FIREBASE AUTHENTICATION: Login
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-      navigate('/events');
+      const response = await signInService(email, password)
+      console.log(response)
+      if (response.success) {
+        if (response.data.isAdmin) {
+          navigate('/admin-events');
+        } else {
+          navigate('/events');
+        }
+      } else {
+        alert(response.data.message);
+      }
     } catch (error) {
       console.log(error);
+      alert(error.message);
     } finally {
       setLoading(false);
     }
@@ -31,6 +43,7 @@ const LoginScreen = () => {
   
   return (
     <div className="flex justify-center items-center h-screen bg-background">
+      {loading && <Loading />}
       <div className="flex w-full h-full shadow-lg overflow-hidden">
 
         {/* Left side */}
@@ -45,7 +58,7 @@ const LoginScreen = () => {
                 className="w-full px-4 py-2 bg-gray-100 border border-gray-200 rounded"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                // required
+                required
               />
             </div>
             
@@ -56,7 +69,7 @@ const LoginScreen = () => {
                 className="w-full px-4 py-2 bg-gray-100 border border-gray-200 rounded"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                // required
+                required
               />
             </div>
             

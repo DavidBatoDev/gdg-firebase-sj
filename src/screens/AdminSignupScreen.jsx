@@ -4,20 +4,45 @@ import { InteractiveGridPattern } from "@/components/magicui/interactive-grid-pa
 import { LineShadowText } from "@/components/magicui/line-shadow-text";
 import { TextAnimate } from "@/components/magicui/text-animate";
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import {
+  signUpAdminService
+} from '@/services/AuthService';
+import Loading from '@/components/loading';
 
 const AdminSignUpScreen = () => {
+  const navigate = useNavigate();
+
   // State for form fields
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   
-  const handleSignUp = (e) => {
+
+  // FIREBASE AUTHENTICATION: Sign Up Admin
+  const handleSignUp = async (e) => {
     e.preventDefault();
-    console.log('Sign up attempted with:', { name, email, password });
+    try {
+      setLoading(true);
+      const response = await signUpAdminService(name, email, password)
+      console.log(response)
+      if (response.success) {
+        console.log('Sign up successful:', response.data);
+        alert('Sign up successful!');
+        navigate('/login');
+      }
+    } catch (error) {
+      console.log(error);
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
   
   return (
     <div className="flex justify-center items-center h-screen bg-background">
+      {loading && <Loading />}
       <div className="flex w-full h-full shadow-lg overflow-hidden">
 
         {/* Left side */}

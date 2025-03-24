@@ -5,8 +5,13 @@ import { LineShadowText } from "@/components/magicui/line-shadow-text";
 import { TextAnimate } from "@/components/magicui/text-animate";
 import { Link } from 'react-router-dom';
 import { BoxReveal } from '@/components/magicui/box-reveal';
+import {
+  signUpService,
+} from '@/services/AuthService';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpScreen = () => {
+  const navigate = useNavigate();
   // State for form fields
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
@@ -14,12 +19,21 @@ const SignUpScreen = () => {
   const [password, setPassword] = useState('');
   
   // FIREBASE AUTHENTICATION: Sign Up
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      console.log('Sign up successful');
+      setLoading(true);
+      const response = await signUpService(name, email, password)
+      if (response.success) {
+        console.log('Sign up successful:', response.data);
+        alert('Sign up successful!');
+        navigate('/login');
+      } else {
+        alert(response.data.message);
+      }
     } catch (error) {
       console.log(error);
+      alert(error.message);
     } finally {
       setLoading(false);
     }
