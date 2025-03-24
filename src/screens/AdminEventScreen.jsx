@@ -15,7 +15,7 @@ import {
     getAllRSVPs, 
     updateRSVP, 
     deleteRSVP
-} from "@/services/RsvpService";
+} from "@/services/EventServices";
 import Loading from "@/components/loading";
 
 
