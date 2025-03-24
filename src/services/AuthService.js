@@ -1,6 +1,6 @@
 import {auth, db} from '../firebase.js'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword  } from 'firebase/auth'
-import { addDoc, collection } from 'firebase/firestore'
+import { doc, getDoc, setDoc } from 'firebase/firestore'
 
 const signUpService = async (name, email, password) => {
     try {
@@ -11,7 +11,8 @@ const signUpService = async (name, email, password) => {
             email: user.user.email,
             isAdmin: false
         }
-        const docRef = await addDoc(collection(db, 'users'), userData); // Add user data to the database
+        
+        await setDoc(doc(db, 'users', userData.uuid), userData); // Add user data to the database
     
         return {success: true, data: userData}
 
@@ -24,7 +25,14 @@ const signUpService = async (name, email, password) => {
 const signInService = async (email, password) => {
     try {
         const user = await signInWithEmailAndPassword(auth, email, password)
-        return {success: true, data: user}
+
+        // fetch user data from the database
+        const userDoc = await getDoc(doc(db, 'users', user.user.uid))
+
+        // get user data
+        const userData = userDoc.data()
+        
+        return {success: true, data: userData}
     } catch (error) {
         console.log(error)
         return {success: false, data: error}
@@ -40,7 +48,8 @@ const signUpAdminService = async (name, email, password) => {
             email: user.user.email,
             isAdmin: true
         }
-        const docRef = await addDoc(collection(db, 'users'), userData); // Add user data to the database
+        
+        await setDoc(doc(db, 'users', userData.uuid), userData); // Add user data to the database
     
         return {success: true, data: userData}
 
