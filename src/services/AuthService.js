@@ -1,5 +1,5 @@
 import {auth, db} from '../firebase.js'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword  } from 'firebase/auth'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut  } from 'firebase/auth'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 
 const signUpService = async (name, email, password) => {
@@ -31,7 +31,7 @@ const signInService = async (email, password) => {
 
         // get user data
         const userData = userDoc.data()
-        
+
         return {success: true, data: userData}
     } catch (error) {
         console.log(error)
@@ -59,6 +59,16 @@ const signUpAdminService = async (name, email, password) => {
     }
 }
 
+const signOutService = async () => {
+    try {
+        await signOut(auth)
+        return {success: true}
+    } catch (error) {
+        console.log(error)
+        return {success: false, data: error}
+    }
+}
 
-export { signUpService, signInService, signUpAdminService }
+
+export { signUpService, signInService, signUpAdminService, signOutService }
 
