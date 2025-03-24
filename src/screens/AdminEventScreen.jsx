@@ -91,8 +91,8 @@ export default function AdminEventScreen() {
     //     fetchEvents();
     // }, []);
 
+    // FIREBASE: Fetch all events with real-time updates
     useEffect(() => {
-        // FIREBASE: Fetch all events with real-time updates
         const unsubscribe = getAllRSVPs((response) => {
             console.log(response);
             setEvents(response.data);
