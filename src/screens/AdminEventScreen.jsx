@@ -73,7 +73,7 @@ export default function AdminEventScreen() {
         });
     }, [navigate])
 
-    // FIREBASE FIRES: Fetch all events with real-time updates
+    // FIREBASE FIRESTORE: Fetch all events with real-time updates
     useEffect(() => {
         const unsubscribe = getAllRSVPs((response) => {
             console.log(response);
