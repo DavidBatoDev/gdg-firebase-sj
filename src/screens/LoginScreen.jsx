@@ -63,10 +63,10 @@ const LoginScreen = () => {
   return (
     <div className="flex justify-center items-center h-screen bg-background">
       {loading && <Loading />}
-      <div className="flex w-full h-full shadow-lg overflow-hidden">
+      <div className="flex flex-col-reverse md:flex-row w-full h-full shadow-lg overflow-hidden">
 
         {/* Left side */}
-        <div className="w-1/2 bg-purple p-12 flex flex-col justify-center items-center">
+        <div className="w-full md:w-1/2 bg-purple p-12 flex flex-col justify-center items-center">
           <h2 className="text-2xl font-bold text-white mb-6">Login an Account</h2>
           <p className="text-white mb-6">Use your existing email for registration</p>
           <form onSubmit={handleLogin} className="w-full">
@@ -109,7 +109,7 @@ const LoginScreen = () => {
         </div>
 
         {/* Right side - Create account form */}
-        <div className='w-1/2 relative'>
+        <div className='w-full md:w-1/2 relative h-full'>
             <InteractiveGridPattern
                 className={cn(
                 "[mask-image:radial-gradient(400px_circle_at_center,white,transparent)]",
@@ -119,17 +119,17 @@ const LoginScreen = () => {
                 squares={[80, 80]}
                 squaresClassName="hover:fill-purple"
             />
-            <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+            <div className='absolute top-10 md:top-1/2 left-1/2 transform -translate-x-1/2 md:-translate-y-1/2'>
               <BoxReveal boxColor="#5046e6" duration={0.5}>
-                  <h1 className='text-6xl font-bold text-black text-center'>
-                      GDG Event 
+                  <h1 className='text-2xl md:text-6xl font-bold text-black text-center'>
+                      GDG Event {' '}
                       <LineShadowText className="italic">
                           RSVP
                       </LineShadowText>
                   </h1>
                 </BoxReveal>
                 <BoxReveal>
-                    <div className='text-center mt-6'>
+                    <div className='text-lg text-center mt-3 md:mt-6'>
                         'An interactive event RSVP platform for GDG events built using Firebase FireStore.'
                     </div>
                 </BoxReveal>

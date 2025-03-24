@@ -43,10 +43,10 @@ const AdminSignUpScreen = () => {
   return (
     <div className="flex justify-center items-center h-screen bg-background">
       {loading && <Loading />}
-      <div className="flex w-full h-full shadow-lg overflow-hidden">
+      <div className="flex flex-col md:flex-row w-full h-full shadow-lg overflow-hidden">
 
         {/* Left side */}
-        <div className='w-1/2 relative'>
+        <div className='w-full h-full md:w-1/2 relative'>
             <InteractiveGridPattern
                 className={cn(
                 "[mask-image:radial-gradient(400px_circle_at_center,white,transparent)]",
@@ -57,13 +57,13 @@ const AdminSignUpScreen = () => {
                 squaresClassName="hover:fill-red-500"
             />
             <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
-                <h1 className='text-6xl font-bold text-black text-center'>
+                <h1 className='text-2xl md:text-6xl font-bold text-black text-center'>
                     GDG Event 
                     <LineShadowText className="italic">
                         RSVP
                     </LineShadowText>
                 </h1>
-                <div className='text-center mt-6'>
+                <div className='text-center mt-3 md:mt-6'>
                     <TextAnimate animation="blurInUp" by="character" once={true}>
                         {name ? `Welcome, Sergeant ${name}!` : 'An interactive event RSVP platform for GDG events built using Firebase FireStore.'}
                         
@@ -74,8 +74,8 @@ const AdminSignUpScreen = () => {
 
 
         {/* Right side - Create account form */}
-        <div className="w-1/2 bg-destructive p-12 flex flex-col justify-center items-center">
-          <h2 className="text-2xl font-bold text-white mb-6">Create Account for Admin Dashboard</h2>
+        <div className="w-full md:w-1/2 bg-destructive p-12 flex flex-col justify-center items-center">
+          <h2 className="text-2xl font-bold text-white mb-6 text-center md:text-justify">Create Account for Admin Dashboard</h2>
           <p className="text-white mb-6">Use your email for registration</p>
           <form onSubmit={handleSignUp} className="w-full">
             <div className="mb-4">

@@ -117,7 +117,7 @@ export default function EventsScreen() {
                 </div>
 
                 {/* Events */}
-                <div className="flex flex-wrap items-center space-x-4 mt-10">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-4 mt-10">
                     {events.map((event) => (
                         <div key={event.uuid} className="relative w-[300px] h-[300px] bg-white rounded-lg shadow-md p-4 cursor-pointer hover:scale-105 transition-transform">
                             <BorderBeam duration={8} size={300} />
