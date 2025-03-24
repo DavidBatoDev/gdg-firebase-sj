@@ -36,32 +36,6 @@ export async function createRSVP(data) {
   }
 }
 
-/**
- * READ all RSVP documents
- */
-// export async function getAllRSVPs() {
-//   try {
-//     const querySnapshot = await getDocs(collection(db, RSVP_COLLECTION));
-//     const rsvps = [];
-//     querySnapshot.forEach((docItem) => {
-//       rsvps.push({
-//         uuid: docItem.id,
-//         ...docItem.data(),
-//       });
-//     });
-//     return {
-//       success: true,
-//       data: rsvps,
-//     };
-//   } catch (error) {
-//     console.error('Error fetching all RSVPs:', error);
-//     return {
-//       success: false,
-//       data: error.message,
-//     };
-//   }
-// }
-
 /*
     Read all RSVP documents with real-time updates
   */
@@ -177,15 +151,57 @@ export async function deleteRSVP(uuid) {
 export async function registerUserToEvent(eventId, userId) {
   try {
     const eventRef = doc(db, "events", eventId);
-    const userRef = doc(db, "users", userId).data();
+    const userRef = doc(db, "users", userId);
 
+    // Fetch event and user data
+    const eventSnap = await getDoc(eventRef);
+    const userSnap = await getDoc(userRef);
+
+    if (!eventSnap.exists()) throw new Error("Event not found");
+    if (!userSnap.exists()) throw new Error("User not found");
+
+    const eventData = eventSnap.data();
+    const userData = userSnap.data();
+
+    // Update the registeredPeople array
     await updateDoc(eventRef, {
-      registeredPeople: [...eventRef.data().registeredPeople, userRef],
+      registeredPeople: [...(eventData.registeredPeople || []), userData],
     });
 
     return { success: true };
   } catch (error) {
     console.error("Error registering user to event:", error);
+    return { success: false, data: error.message };
+  }
+}
+
+export async function unregisterUserFromEvent(eventId, userId) {
+  try {
+    const eventRef = doc(db, "events", eventId);
+    const userRef = doc(db, "users", userId);
+
+    // Fetch event and user data
+    const eventSnap = await getDoc(eventRef);
+    const userSnap = await getDoc(userRef);
+
+    if (!eventSnap.exists()) throw new Error("Event not found");
+    if (!userSnap.exists()) throw new Error("User not found");
+
+    const eventData = eventSnap.data();
+    const userData = userSnap.data();
+
+    // Remove the user from the registeredPeople array
+    const updatedRegisteredPeople = eventData.registeredPeople.filter(
+      (user) => user.uuid !== userData.uuid
+    );
+
+    await updateDoc(eventRef, {
+      registeredPeople: updatedRegisteredPeople,
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error unregistering user from event:", error);
     return { success: false, data: error.message };
   }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { cn } from "@/lib/utils";
 import { InteractiveGridPattern } from "@/components/magicui/interactive-grid-pattern";
 import { LineShadowText } from "@/components/magicui/line-shadow-text";
@@ -8,6 +8,9 @@ import { BoxReveal } from '@/components/magicui/box-reveal';
 import Loading from '@/components/loading';
 import { useNavigate } from 'react-router-dom';
 import { signInService } from '@/services/AuthService';
+import { doc, getDoc } from 'firebase/firestore';
+import { auth, db } from '@/firebaseConfig';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const LoginScreen = () => {
   const navigate = useNavigate();
@@ -16,6 +19,22 @@ const LoginScreen = () => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  // FIREBASE AUTHENTICATION: On Auth State Changed (Check if user is logged in and is admin)
+  useEffect(() => {
+      onAuthStateChanged(auth, async (user) => {
+          if (user) {
+          // get the user from the database
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            const userData = userDoc.data();
+            if (userData.isAdmin) {
+                navigate('/admin-events');
+            } else {
+              navigate('/events');
+            }
+          }
+      });
+  }, [navigate])
   
   // FIREBASE AUTHENTICATION: Login
   const handleLogin = async (e) => {

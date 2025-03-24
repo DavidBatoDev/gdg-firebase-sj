@@ -16,7 +16,11 @@ import {
     updateRSVP, 
     deleteRSVP
 } from "@/services/EventServices";
+import { signOutService } from "@/services/AuthService";
 import Loading from "@/components/loading";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "@/firebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
 
 
 // Mock Data
@@ -54,6 +58,33 @@ export default function AdminEventScreen() {
     const [events, setEvents] = useState([]); // all events array like in mock data
     const [loading, setLoading] = useState(false); // to know if loading is active
 
+    // FIREBASE AUTHENTICATION: On Auth State Changed (Check if user is logged in and is admin)
+    useEffect(() => {
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                navigate('/login');
+            }
+            // get the user from the database
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            const userData = userDoc.data();
+            if (!userData.isAdmin) {
+                navigate('/login');
+            }
+        });
+    }, [navigate])
+
+    // FIREBASE FIRES: Fetch all events with real-time updates
+    useEffect(() => {
+        const unsubscribe = getAllRSVPs((response) => {
+            console.log(response);
+            setEvents(response.data);
+        });
+
+        // Cleanup subscription on unmount
+        return () => unsubscribe();
+    }, []);
+
+
     // event data for form fields
     const [eventData, setEventData] = useState({
         uuid: '',
@@ -81,29 +112,7 @@ export default function AdminEventScreen() {
         setLoading(false);
     }
 
-    // useEffect(() => {
-    //     // FIREBASE: Fetch all events
-    //     const fetchEvents = async () => {
-    //         const response = await getAllRSVPs();
-    //         console.log(response);
-    //         setEvents(response.data);
-    //     }
-    //     fetchEvents();
-    // }, []);
-
-    // FIREBASE: Fetch all events with real-time updates
-    useEffect(() => {
-        const unsubscribe = getAllRSVPs((response) => {
-            console.log(response);
-            setEvents(response.data);
-        });
-
-        // Cleanup subscription on unmount
-        return () => unsubscribe();
-    }, []);
-
-
-    // FIREBASE: Read Event By ID
+    // FIREBASE FIRESTORE: Read Event By ID
     const handleEditModal = async (uuid) => {
         setLoading(true);
         setIsEdit(true);
@@ -114,7 +123,7 @@ export default function AdminEventScreen() {
         setLoading(false);
     }
 
-    // FIREBASE: Create Event
+    // FIREBASE FIRESTORE: Create Event
     const handleCreateEvent = async () => {
         const data = {
             ...eventData,
@@ -125,7 +134,7 @@ export default function AdminEventScreen() {
         setModalOpen(false);
     }
 
-    // FIREBASE: Edit Event
+    // FIREBASE FIRESTORE: Edit Event
     const handleEditEvent = async (uuid) => {
         const data = {
             ...eventData,
@@ -134,14 +143,15 @@ export default function AdminEventScreen() {
         setModalOpen(false);
     }
 
-    // FIREBASE: Delete Event
+    // FIREBASE FIRESTORE: Delete Event
     const handleDeleteEvent = async (uuid) => {
         deleteRSVP(uuid);
         handleClose()
     }
 
     // FIREBASE AUTHENTHICATION: Logout
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        await signOutService();
         navigate('/login');
     }
 
