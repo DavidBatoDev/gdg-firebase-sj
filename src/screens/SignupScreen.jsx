@@ -5,10 +5,11 @@ import { LineShadowText } from "@/components/magicui/line-shadow-text";
 import { TextAnimate } from "@/components/magicui/text-animate";
 import { Link } from 'react-router-dom';
 import { BoxReveal } from '@/components/magicui/box-reveal';
+import { useNavigate } from 'react-router-dom';
+import Loading from '@/components/loading';
 import {
   signUpService,
 } from '@/services/AuthService';
-import { useNavigate } from 'react-router-dom';
 
 const SignUpScreen = () => {
   const navigate = useNavigate();
@@ -41,6 +42,7 @@ const SignUpScreen = () => {
   
   return (
     <div className="flex justify-center items-center h-screen bg-background">
+      {loading && <Loading />}
       <div className="flex w-full h-full shadow-lg overflow-hidden">
 
         {/* Left side */}

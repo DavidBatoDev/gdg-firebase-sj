@@ -70,5 +70,10 @@ const signOutService = async () => {
 }
 
 
-export { signUpService, signInService, signUpAdminService, signOutService }
+export { 
+    signUpService, 
+    signInService, 
+    signUpAdminService, 
+    signOutService 
+}
 

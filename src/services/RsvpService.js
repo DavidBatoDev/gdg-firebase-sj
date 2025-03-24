@@ -171,4 +171,21 @@ import {
       };
     }
   }
+
+
+  export async function registerUserToEvent (eventId, userId) {
+    try {
+      const eventRef = doc(db, 'events', eventId);
+      const userRef = doc(db, 'users', userId).data();
+
+      await updateDoc(eventRef, {
+        registeredPeople: [...eventRef.data().registeredPeople, userRef],
+      });
+  
+      return { success: true };
+    } catch (error) {
+      console.error('Error registering user to event:', error);
+      return { success: false, data: error.message };
+    }
+  }
   
